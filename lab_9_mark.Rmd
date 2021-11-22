@@ -1,0 +1,165 @@
+---
+title: "Lab 9"
+author: "Jahiya Clark"
+date: "11/13/2021"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  code_folding: show
+---
+# Brown Creeper Chi- Square Test
+
+```{r}
+require(here)
+birds   = read.csv(here("data", "bird.sta.csv"))
+hab     = read.csv(here("data", "hab.sta.csv"))
+birdhab = merge(birds, hab, by=c("basin", "sub", "sta"))
+br_creeper_table = table(birdhab$s.edge, birdhab$BRCR > 0)[, 2:1]
+
+chisq.test(br_creeper_table)
+```
+
+# Question 1
+
+There is no significant relationship between brown creeper presence or absence and forest interior or forest edge. 
+
+# Question 2 
+
+My chi square value is 23.3, which is high, and my p value is 1.386e^-6, which is less than significance value of 0.05. Thus I can reject the null hypothesis. The two variables are dependent and have a relationship. I do believe brown creepers show a habitat preference for the interior of forest after also doing prop.test.
+
+```{r}
+prop.test(c(29, 314), c(173, 873), 
+          alternative = c("less"))
+```
+# Building Models for ANOVA
+
+```{r}
+require(palmerpenguins)
+fit_fl_sp = 
+  lm(
+    formula = flipper_length_mm ~ species,
+    data = penguins)
+```
+
+# Question 3
+
+
+```{r}
+
+fit_species <- 
+  lm(
+    formula = penguins$body_mass_g ~ penguins$species
+  )
+```
+
+# Question 4
+```{r}
+fit_sex <-  
+  lm(
+    formula = penguins$body_mass_g ~ penguins$sex)
+
+```
+
+# Question 5
+
+```{r}
+fit_both <- 
+  lm(
+    formula = penguins$body_mass_g ~ penguins$species * penguins$sex
+  )
+```
+
+
+# Question 6
+
+```{r}
+boxplot(
+  formula(fit_species),
+  main = "Penguins by Body Mass",
+  ylab = "Body Mass (g)",
+  xlab = "",
+  col = "pink"
+)
+```
+
+# Question 7
+
+```{r}
+boxplot(
+  formula(fit_sex),
+  main = "Penguin's Sex by their Body Mass",
+  ylab = "Body Mass (g)",
+  xlab = "",
+  col = "#C39BD3"
+)
+```
+
+# Question 8
+
+```{r}
+boxplot(
+  formula(fit_both),
+  ylab = "Body Mass (g)",
+  xlab = "",
+  names = c("Female \nAdelie", "Female \nChinstrap", 
+            "Female \nGentoo", "Male \nAdelie", "Male \nChinstrap",
+            "Male \nGentoo"),las= 2,
+  col = rainbow(6)
+)
+```
+
+# Question 9
+
+I think the fit_species model will have a problem with the homogeneity assumption because the Adelie and Chinstrap boxes are very similar. Additionally, because of that my model fit_both might have a problem as well. 
+
+# Question 10
+
+The null hypothesis of a Bartlett test is that the sample variances are the same. 
+
+# Question 11
+
+The p-value is 0.0500
+```{r}
+bartlett.test(penguins$body_mass_g ~ penguins$species)
+
+```
+# Question 12
+
+The p-value is 0.0319
+
+```{r}
+bartlett.test(penguins$body_mass_g ~ penguins$sex)
+
+```
+
+# Question 13
+
+The p-value of from the Bartlett test of homogeneity for observations of body mass (g) grouped by sex was 0.03194 and  species was 0.05005. 
+
+```{r}
+sex_group = aggregate(
+  body_mass_g ~ sex,
+  data = penguins,
+  FUN = c)
+
+sp_group = aggregate(
+  body_mass_g ~ species,
+  data = penguins,
+  FUN = c)
+
+bartlett.test(sex_group$body_mass_g)
+
+bartlett.test(sp_group$body_mass_g)
+
+```
+
+# Question 14
+
+After conducting the Bartlett test for homogeneity, I found some issue with the test comparing body mass by species. Because the p-value is 0.05005 I will not reject the null hypothesis. The cutoff of 0.05 is to me not equal to or less than but just less than 0.05 to be significant. 
+
+
+
+

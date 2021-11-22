@@ -1,0 +1,12 @@
+---
+title: "Lab 10: ANOVA by Hand "
+author: "Jahiya Clark"
+date: "11/17/2021"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  code_folding: show
+---

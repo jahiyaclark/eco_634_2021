@@ -1,0 +1,23 @@
+---
+title: "code chunk demo"
+author: "Jahiya Clark"
+date: "10/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_penguin_data, echo = TRUE, eval= TRUE}
+require(palmerpenguins)
+head(penguins)
+```
+
+```{r simple pairplot}
+plot(penguins[, 3:5])
+```
+
+
+```{r my chunk 1}
+```

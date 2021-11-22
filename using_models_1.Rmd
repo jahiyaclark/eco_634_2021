@@ -1,0 +1,145 @@
+---
+title: "Using Models 1"
+author: "Jahiya Clark"
+date: "11/21/2021"
+output: 
+  html_document:
+  code_folding: hide
+  toc_floating: yes
+  
+---
+# Question 1
+```{r collapse=TRUE}
+require(here)
+catrate <- read.csv(here("data", "catrate.csv"))
+head(catrate)
+```
+
+```{r}
+summary(catrate)
+```
+
+```{r}
+hist(catrate$cat.rate, main = "Histogram of Catastrophe Rates", xlab = "Catastrophe Rate")
+```
+
+# Question 2
+
+```{r}
+shapiro.test(catrate$cat.rate)
+```
+# Question 3
+
+The null hypothesis is that the data sampled of catastrophe rates is from a normally-distributed population of such rates.
+
+# Question 4
+
+There is evidence that the sample data has come from a normally distributed population, p-value = 0.041
+
+# Question 5
+
+```{r}
+t.test(catrate$cat.rate, mu = 2/7)
+```
+
+# Question 6
+
+The null hypothesis is that the mean of the catastrophe rate we collected from our sample population of salamanders is not different from the mean pond late-filling rate.
+
+# Question 7
+
+This is a two tailed test; to see if there is a difference in means in neither direction. In nontechnical English, I tested if the mean of salamander catastrophe rate is either bigger or smaller than the mean of pond late-filling rate.  
+
+# Question 8
+
+The p-value is 0.01193, meaning I can reject the null hypothesis. However, if it is a false positive or Type 1 error then we need to decrease the p value. A p-value of 0.01 would fix this false positive because we could not reject the null hypothesis then.
+
+# Question 9
+
+The confidence interval is 0.3526250 and 0.7261295, and doesn't include 0.
+
+# Question 10
+
+Yes, there is evidence to reject the null hypothesis when the alpha is 0.05. The p-value is 0.012.
+
+# Question 11
+
+```{r}
+wilcox.test(catrate$cat.rate, mu = 2 / 7)
+```
+
+# Question 12
+
+The p-value of the Wilcox test is 0.006275 which is much smaller than the p-value from the t-test which was 0.01193.
+
+# Question 13
+
+We can reject the null hypothesis because the p-value is under the alpha level at 0.0063.
+
+# Question 14
+
+I can conclude that from being able to reject both null hypotheses that the mean catastrophic rate of salamanders is different from the mean rate of pond land-filling. Because the samples are small using the Wilcoxon rank sum test ensures us that the sample data is from a normally distribute population. This provides more evidence of reject the t.test null hypothesis.
+
+# Question 15
+
+I think the graphical exploration of the flipper length means by species (Adelie and Chinstrap) is the best representation of this data and clearly shows there is a difference of the means.
+
+```{r}
+require(palmerpenguins)
+penguin_dat = droplevels(subset(penguins, species != "Gentoo"))
+
+summary(penguin_dat)
+
+boxplot(
+  flipper_length_mm ~ species, 
+  data = penguin_dat,
+  ylab = "Flipper Length (mm)")
+```
+
+# Question 16
+
+```{r}
+require(palmerpenguins)
+penguin_dat = droplevels(subset(penguins, species != "Gentoo"))
+
+dat_adelie = subset(penguin_dat, species == "Adelie")
+
+shapiro.test(dat_adelie$flipper_length_mm)
+
+dat_chin = subset(penguin_dat, species == "Chinstrap")
+
+shapiro.test(dat_chin$flipper_length_mm)
+```
+
+# Question 17
+
+From the outputs, we can conclude that the samples from the Adelie and the Chinstrap are from normally distributed populations. That is because we failed to reject both null hypotheses, which is that the data is from a normally-distributed population.
+
+# Question 18
+
+```{r}
+par(mfrow = c(1, 2))
+hist(dat_adelie$flipper_length_mm, 
+     main = "Histogram of Adelie Flipper Length", 
+     xlab = "Flipper Length (mm)", col = "#9BD3CA",
+     ylim = range(0, 50))
+       
+       
+hist(dat_chin$flipper_length_mm, 
+     main = "Histogram of Chinstrap Flipper Length", 
+     xlab = "Flipper Length (mm)", col = "#9ED59F",
+     breaks = seq(from= 170, to=220, by=5),
+     ylim = range(0, 20))
+```
+
+# Question 19
+
+The alternative hypothesis of the two-sample t-test is that there is a difference between the means of flipper lengths by Adelie penguins and Chinstrap penguins. I conducted the two tailed t.test.
+
+# Question 20
+```{r}
+t.test(flipper_length_mm ~ species,
+         data = penguin_dat)
+```
+
+

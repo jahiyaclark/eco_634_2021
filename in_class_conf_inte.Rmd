@@ -1,0 +1,53 @@
+---
+title: "In Class Confidence Intervals"
+author: "Jahiya Clark"
+date: "11/13/2021"
+output: html_document
+code_folding: show
+---
+
+# Question 1
+```{r}
+qnorm(c(0.05, 0.95))
+
+```
+
+# Question 2
+
+```{r}
+qt(c(0.025,0.975), 10)
+```
+
+# Question 3
+df= 69
+```{r}
+qt(c(0.025), df = 69)
+qnorm(c(0.025))
+```
+
+# Question 4
+df= 475
+```{r}
+qt(c(0.025), df = 475)
+qnorm(c(0.025))
+```
+# Question 5
+```{r}
+qt(c(0.025, 0.975), df= 49, lower.tail = FALSE) 
+```
+
+# Question 6
+
+The interval is 10 +/- 0.892
+```{r}
+
+sse= (3.14 / sqrt(50)) 
+crit = qt(c(0.025, 0.975), df= 49, lower.tail = FALSE) 
+mean = 10
+
+sse * crit
+
+10 + (sse * crit)
+```
+
+

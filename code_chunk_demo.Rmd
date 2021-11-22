@@ -1,0 +1,37 @@
+---
+title: "code chunk demo"
+author: "Jahiya Clark"
+date: "10/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_penguin_data, echo = TRUE, eval= TRUE}
+require(palmerpenguins)
+head(penguins)
+```
+
+```{r simple pairplot, fid.width = 4, fig.asp= 1/1.5}
+plot(penguins[, 3:5])
+```
+
+
+```{r my chunk 1}
+```
+
+
+# Tabset Example {.tabset .tabset-pills}
+the following tabs contain different plot types
+
+## Histogram
+```{r flipper length histogram, fig.asp=1.5}
+hist(penguins$flipper_length_mm)
+```
+
+### Another Histogram Bill Length 
+```{r bill length histogram, echo = FALSE}
+hist(penguins$bill_length_mm)
+```
