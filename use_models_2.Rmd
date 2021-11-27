@@ -1,0 +1,81 @@
+---
+title: "Using Models 2"
+author: "Jahiya Clark"
+date: "11/22/2021"
+output: 
+  html_document:
+  toc_floating: yes
+---
+
+
+# Question 1
+```{r}
+require(palmerpenguins)
+
+fit_interactive <- lm(
+    formula = penguins$body_mass_g ~  penguins$sex*penguins$species 
+  )
+boxplot(
+  formula(fit_interactive),
+  ylab = "Body Mass (g)",
+  xlab = "",
+  names = c("Female \nAdelie","Male \nAdelie", "Female \nChinstrap",
+          "Male \nChinstrap",  "Female \nGentoo",  
+            "Male \nGentoo"),las= 2,
+  col = c("#FFC0CB", 	"#FFB6C1", "#FF69B4","#FF1493","#DB7093","#C71585")
+)
+```
+
+# Question 2
+
+Based on the boxplot I believe there will be a significant difference in weight between the Adelie and Gentoo, where both males are heavier than females.
+
+# Question 3
+
+I think it will improve the model because when we test the model of three penguin species there seems to be a significant difference in the mean weight between the species. However, it does appear that the Adelie and Chinstraps weights aren't that difference, so we can wonder if there is another explanatory variable that's making a difference. So, adding sex to the model can better help understand the difference in mean weights.   
+
+# Question 4
+```{r}
+fit_both <- lm(
+    formula = penguins$body_mass_g ~  penguins$sex*penguins$species 
+  )
+
+```
+# Question 5
+
+The base case is 3368.84. 
+```{r}
+summary(fit_both)
+
+```
+
+# Question 6
+You need the intercept or base case or penguins$sexfemale or penguins$speciesAdelie (all the same thing) row and the penguins$species chinstrap to calculate the average mass of female chinstrap penguins.
+
+# Question 7
+The average mass of female chinstrap penguins is 3527.21.
+
+```{r}
+3368.84 + 158.37
+```
+
+# Question 8
+
+The observed average mass of female Chinstrap penguins is 3527.206
+
+```{r}
+chin = subset(penguins, species == "Chinstrap", drop = TRUE) 
+
+f_chin_means = aggregate(
+  body_mass_g ~ sex, 
+  data = chin, 
+  FUN = "mean", 
+  na.rm = TRUE)
+
+f_chin_means
+
+```
+
+
+
+

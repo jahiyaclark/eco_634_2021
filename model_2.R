@@ -41,3 +41,44 @@ fit_species = lm(body_mass_g ~ species, data = penguins)
 boxplot(body_mass_g ~ species, data = penguins)
 
 fit_additive = lm(body_mass_g ~ sex + species, data = penguins)
+
+fit_interactive = lm(body_mass_g ~ sex * species, data = penguins)
+
+anova(fit_interactive)
+
+summary(fit_interactive)
+
+require(palmerpenguins)
+
+lm(bill_length_mm ~ body_mass_g, data = penguins)
+boxplot(
+  formula(fit_interactive),
+  ylab = "Body Mass (g)",
+  xlab = "",
+  names = c("Female \nAdelie", "Female \nChinstrap", 
+            "Female \nGentoo", "Male \nAdelie", "Male \nChinstrap",
+            "Male \nGentoo"),las= 2,
+  col = rainbow(6)
+)
+
+
+chin = subset(penguins, species == "Chinstrap", drop = TRUE) 
+female <- subset(penguins, sex == "female", drop = TRUE)
+mean(q_8$body_mass_g, na.rm = TRUE)
+
+
+aggregate(q_8, sex)
+
+?data.frame()
+?subset
+aggregate(chin, sex, r)
+
+f_chin_means = aggregate(
+  body_mass_g ~ sex, 
+  data = chin, 
+  FUN = "mean", 
+  na.rm = TRUE)
+
+f_chin_means
+
+

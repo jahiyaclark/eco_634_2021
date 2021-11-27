@@ -5,7 +5,6 @@ date: "11/21/2021"
 output: 
   html_document:
   code_folding: hide
-  toc_floating: yes
   
 ---
 # Question 1
@@ -48,7 +47,7 @@ The null hypothesis is that the mean of the catastrophe rate we collected from o
 
 # Question 7
 
-This is a two tailed test; to see if there is a difference in means in neither direction. In nontechnical English, I tested if the mean of salamander catastrophe rate is either bigger or smaller than the mean of pond late-filling rate.  
+This is a two tailed test; to see if there is a difference in means in neither direction. In nontechnical English, i tested if the mean of salamander catastrophe rate is either bigger or smaller than the mean of pond late-filling rate.  
 
 # Question 8
 
@@ -78,23 +77,7 @@ We can reject the null hypothesis because the p-value is under the alpha level a
 
 # Question 14
 
-I can conclude that from being able to reject both null hypotheses that the mean catastrophic rate of salamanders is different from the mean rate of pond land-filling. Because the samples are small using the Wilcoxon rank sum test ensures us that the sample data is from a normally distribute population. This provides more evidence of reject the t.test null hypothesis.
-
 # Question 15
-
-I think the graphical exploration of the flipper length means by species (Adelie and Chinstrap) is the best representation of this data and clearly shows there is a difference of the means.
-
-```{r}
-require(palmerpenguins)
-penguin_dat = droplevels(subset(penguins, species != "Gentoo"))
-
-summary(penguin_dat)
-
-boxplot(
-  flipper_length_mm ~ species, 
-  data = penguin_dat,
-  ylab = "Flipper Length (mm)")
-```
 
 # Question 16
 
@@ -113,33 +96,4 @@ shapiro.test(dat_chin$flipper_length_mm)
 
 # Question 17
 
-From the outputs, we can conclude that the samples from the Adelie and the Chinstrap are from normally distributed populations. That is because we failed to reject both null hypotheses, which is that the data is from a normally-distributed population.
-
-# Question 18
-
-```{r}
-par(mfrow = c(1, 2))
-hist(dat_adelie$flipper_length_mm, 
-     main = "Histogram of Adelie Flipper Length", 
-     xlab = "Flipper Length (mm)", col = "#9BD3CA",
-     ylim = range(0, 50))
-       
-       
-hist(dat_chin$flipper_length_mm, 
-     main = "Histogram of Chinstrap Flipper Length", 
-     xlab = "Flipper Length (mm)", col = "#9ED59F",
-     breaks = seq(from= 170, to=220, by=5),
-     ylim = range(0, 20))
-```
-
-# Question 19
-
-The alternative hypothesis of the two-sample t-test is that there is a difference between the means of flipper lengths by Adelie penguins and Chinstrap penguins. I conducted the two tailed t.test.
-
-# Question 20
-```{r}
-t.test(flipper_length_mm ~ species,
-         data = penguin_dat)
-```
-
-
+From the outputs, we can conclude that the samples from the Adelie and the Chinstrap are from normally distributed populations. That is because we failed to reject both null hypotheses, which is that the 

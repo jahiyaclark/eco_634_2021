@@ -1,0 +1,24 @@
+---
+title: "Using Models 2"
+author: "Jahiya Clark"
+date: "11/22/2021"
+output: 
+html_document:
+  toc_floating: yes
+---
+
+# Question 1
+
+```{r}
+fit_interactive = lm(body_mass_g ~ sex * species, data = penguins)
+boxplot(
+  formula(fit_interactive),
+  ylab = "Body Mass (g)",
+  xlab = "",
+  names = c("Female \nAdelie", "Female \nChinstrap", 
+            "Female \nGentoo", "Male \nAdelie", "Male \nChinstrap",
+            "Male \nGentoo"),las= 2,
+  col = rainbow(6)
+)
+
+```
