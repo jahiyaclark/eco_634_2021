@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # Welcome to Jahiya's class page!
 
 
-This is where I study... It didn't work at first but hopefully it works now. 
+This is where I study. 
 
 [Final Project: R Reference Guide](final_R_reference.html)
 
-
+![I study here too!](transition_picture.jpg)
