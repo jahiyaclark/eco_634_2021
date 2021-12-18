@@ -1,0 +1,237 @@
+---
+title: 'Part 2: Data Analysis'
+author: "Jahiya Clark"
+date: "12/10/2021"
+output: html_document
+---
+
+# Part 2: Data Analysis {.tabset .tabset-pills}
+
+## Data Exploration 
+
+```{r}
+require(here)
+delomys <- read.csv(here("data", "delomys.csv"))
+summary(delomys)
+shapiro.test(delomys$body_mass)
+
+shapiro.test(delomys$body_length)
+```
+```{r fig.width=10}
+
+
+require(palmerpenguins)
+
+
+plot(bill_length_mm ~ body_mass_g, data = penguins)
+
+```
+
+```{r}
+require(palmerpenguins)
+plot(bill_length_mm ~ body_mass_g, data = penguins)
+```
+
+
+## Graphical Exploration
+
+```{r}
+plot(delomys$body_length ~ delomys$body_mass, main = "Scatterplot of Delomys' Body Mass by Body Length", 
+     xlab = "Body Mass",
+     ylab = "Body Length")
+```
+
+
+```{r}
+hist(delomys$body_mass, main = "Histogram of Delomys Body Mass", xlab = "Body Mass", col = 7:9)
+hist(delomys$body_length, main = "Histogram of Delomys Body Length", xlab = "Body Length", col = 1:4)
+
+```
+```{r}
+boxplot(body_mass ~ binomial, data = delomys, main = "Boxplot of Delomys species by body weight", xlab = "" , ylab = "Body Mass", col = "blue")
+
+boxplot(body_mass ~ sex, data = delomys, main = "Boxplot of Delomys sex by body weight", xlab = "" , ylab = "Body Mass", col = "green")
+
+```
+```{r}
+con_box <- 
+  lm(
+    formula = delomys$body_mass ~ delomys$sex *
+  delomys$binomial)
+
+
+boxplot(
+  formula(con_box),
+  main = "Delomys Body mass by sex and species",
+  ylab = "Body Mass",
+  xlab = "",
+  names = c("Female \nD. doralis", "Male \nD. doralis", 
+            "Female \nD. sublineatus", "Male \nD. sublineatus"),
+  col = terrain.colors(4)
+)
+```
+
+## Questions 1-4
+
+### Question 1 
+
+From the scatterplots of body mass and body length, there seem to be a positive linear relationship between the variables. As body mass increases, so does body length of Delomys species. 
+
+### Question 2
+
+The histograms depicting body mass and body length of Delomys are both right skewed shaped. The histogram of body length has a longer tail to the right than the histogram of body mass. They do not come off as completely normal shaped but body mass more so than body length. 
+
+### Question 3
+
+The Shapiro Wilk normality test for Body mass produced a p-value of 4.33e-05, which allows us to reject the null hypothesis that the data is normally distributed. Which I think differs from the histogram of body mass that shows a bell shape trend. Additionally, we can reject the null hypothesis of the Shapiro wilk test for body length that the data is normally distributed because the p-value is 2.2e-16. This interpretation can be backed with the histogram of body length, that shows a very right skewed trend. 
+
+
+### Question 4
+
+The conditional boxplot depicting Delomys body mass by sex and species doesn't provide any strong graphical evidence of differences. There does seem to be a difference between the sexes of both species; where males weigh more than females but it seems like a small difference. Additionally, there seems to be a small difference between *D. doralis* being heavier than *D. sublineatus*. 
+
+
+## Model Building
+
+```{r}
+fit1 = lm(delomys$body_length ~ delomys$body_mass)
+
+fit2 = lm(delomys$body_mass~ delomys$sex)
+
+fit3 = lm(delomys$body_mass ~ delomys$binomial)
+
+fit4 = lm(delomys$body_mass ~ delomys$sex + delomys$binomial)
+
+fit5 = lm(delomys$body_mass ~ delomys$sex * delomys$binomial)
+
+```
+
+## Model Diagnostics
+
+```{r}
+par(mfrow = c(3, 2))
+hist(residuals(fit1), main = "Histogram of Fit 1 Residuals", xlab = "Residuals", col = "#FF7F50", , xlim = c(-35,35), breaks = 25)
+hist(residuals(fit2),  main = "Histogram of Fit 2 Residuals", xlab = "Residuals", col = "#DE3163")
+hist(residuals(fit3),  main = "Histogram of Fit 3 Residuals", xlab = "Residuals", col = "#CCCCFF")
+hist(residuals(fit4),  main = "Histogram of Fit 4 Residuals", xlab = "Residuals", col = "#6495ED")
+hist(residuals(fit5),  main = "Histogram of Fit 5 Residuals", xlab = "Residuals", col = "#9FE2BF")
+```
+
+```{r}
+shapiro.test(residuals(fit1))
+shapiro.test(residuals(fit2))
+shapiro.test(residuals(fit3))
+shapiro.test(residuals(fit4))
+shapiro.test(residuals(fit5))
+```
+
+## Questions 5-6
+
+### Questiton 5
+
+We can conclude that because we can reject the null hypothesis from the Shapiro Wilk tests the residuals are not from a normal distribution. Which is supported by the histograms that are mostly right skewed (except fit1 which is left skewed). 
+
+### Question 6
+
+No, the models do not have equally severe violations of normality assumption. For instance, fit4 and fit5 have the possibility of violating the assumption of independence and implicit factor because we are testing two explanatory variables that may have implicit factors. 
+
+## Model Interpretation
+```{r}
+
+knitr::kable(coef(summary(fit1)))
+knitr::kable(coef(summary(fit2)))
+knitr::kable(coef(summary(fit3)))
+knitr::kable(coef(summary(fit4)))
+knitr::kable(coef(summary(fit5)))
+```
+
+
+## Questions 7-9 Body Length
+
+```{r}
+summary(fit1)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+summary(fit5)
+```
+### Question 7
+
+The p-value of the relationship body length and body mass is  2.2e-16, meaning we can reject the null hypothesis and that there is a relationship between the two variables. Yet, the R^2^ value is 0.5553, which can mean 55% of the variance found in body length can be explained by the body mass.
+
+
+### Question 8
+
+The body length is expected to be 163.67
+```{r}
+"y= mx + b"
+y = (0.87550)*(100) + (76.12466)
+y 
+```
+### Question 9
+
+The expected body length is 76.12.
+
+```{r}
+"y= mx + b"
+y = (0.87550)*(0) + (76.12466)
+y
+```
+
+## Questions 10-13 Body Mass: Model Coefficients
+
+### Question 10
+
+The base case for sex is 42.7115
+
+### Question 11
+
+The base case for binomial is 46.7524.
+
+### Question 12
+
+Males are the heavier sex.
+
+### Question 13
+
+*D. sublineatus* is the heavier species. 
+
+## Questions 14-16 Body Mass: ANOVA
+```{r}
+knitr::kable(anova(fit1))
+knitr::kable(anova(fit2))
+knitr::kable(anova(fit3))
+knitr::kable(anova(fit4))
+knitr::kable(anova(fit5))
+```
+
+### Question 14
+
+Yes both sex and species are significant predictors of body mass. They have p-values of 0.0001951 (sex) and 0 (species).
+
+### Question 15 
+
+According to the p-values they are all significant interactions except the factorial interaction between both sex and species (p-value is 0.9504).
+
+### Question 16
+
+The significance of the main effects stay significant in the single predictor models and the additive model. But in the interactive model is only significant on it's own but not when interacting together.
+
+## Questions 17-18 Model Comparison: Body Mass
+
+```{r}
+AIC(fit1)
+AIC(fit2)
+AIC(fit3)
+AIC(fit4)
+AIC(fit5)
+```
+
+### Question 17 
+
+Out of the five models my fit1 and fit 4 have the lowest AIC.
+
+
+### Question 18 
+
+I would chooses fit4 because it is the additive model that has a significant p-value that can portray the interaction of both sex on body mass and species on body mass. 

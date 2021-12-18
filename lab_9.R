@@ -227,4 +227,4 @@ bartlett.test(sex_group$body_mass_g)
 
 bartlett.test(sp_group$body_mass_g)
 
-
+?shapiro.test

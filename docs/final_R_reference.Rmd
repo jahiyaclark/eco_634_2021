@@ -1,0 +1,216 @@
+---
+title: 'Final Project: R Reference'
+author: "Jahiya Clark"
+date: "12/2/2021"
+output: html_document
+---
+
+# Part 1: R Reference Guide {.tabset .tabset-pills}
+
+
+## Loading Data Packages 
+
+```{r}
+require(here)
+library(palmerpenguins)
+ginkgo <- data.frame(read.csv(here("data", "ginkgo_data_2021.csv")))
+head(ginkgo)
+```
+
+
+## Data Structures
+
+### c()
+
+The function c() combines or concatenates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements).
+
+* All of the elements must be of the same type.
+  + I can’t combine character and numeric types in the same call to c()
+Here’s two examples using numeric and character data types:
+
+```{r}
+## Create a vector of numbers:
+num_vec  = c(1, 4, 8, 9, 13)
+
+## Create a vector of characters:
+char_vec = c("a", "fish", "data is cool")
+
+## Typing the name of the vector into the console prints the contents
+num_vec
+
+## The print() function accomplishes the same task:
+print(char_vec)
+```
+
+### length()
+
+The function length() can be used to get the length of vectors (including lists) and factors.
+```{r}
+length(ginkgo$ï..site_id)
+```
+### Matrix()
+
+This function creates matrix from given data values. 
+```{r}
+matrix(data = 0:50, nrow = 5, ncol = 5, byrow = FALSE)
+```
+### Data.Frame()
+
+The function data frame() creates a collection of variables related to each other in matrices and lists.
+
+```{r}
+head(data.frame(ginkgo))
+
+```
+```{r}
+nrow(ginkgo)
+ncol(ginkgo)
+dim(ginkgo)
+```
+
+
+## Subsetting
+
+### $
+```{r}
+head(ginkgo$seeds_present)
+```
+
+### []
+
+```{r}
+ginkgo[1,]
+
+ginkgo[2,3]
+
+head(ginkgo[,3])
+```
+### Subset()
+
+```{r}
+head(subset(penguins, species == "Adelie"))
+```
+
+
+## Numerical Data Exploration
+
+### Summary()
+
+The function summary() is  used to produce result summaries of the results of various model fitting functions. 
+```{r}
+summary(ginkgo)
+```
+### Mean()
+
+The function mean() is used to get the result of the data's arithmetic mean. 
+```{r}
+mean(ginkgo$max_width)
+```
+### SD()
+
+The function sd() is used to get the standard deviation of the interested data.
+
+```{r}
+sd(ginkgo$max_width)
+```
+
+
+
+## Graphical Data Exploration
+
+### Scatterplot
+```{r}
+plot(max_width ~ max_depth, data = ginkgo, 
+     xlab = "Max Leaf Depth", ylab = "Max Lead Width",
+     main = "Scatterplot of Ginkgo Leaf Max Depth by Max Width",
+     col = ginkgo$ï..site_id, xlim = c(5, 150), ylim = c(5, 150), pch= 5, cex = 1.5)
+```
+
+
+### Histogram
+
+```{r}
+require(palmerpenguins)
+penguins <- data.frame(penguins)
+
+hist(penguins$flipper_length_mm, breaks = 12, main = "Histogram of Penguin Flipper Lengths", xlab = "Flipper Length (mm)", col = cm.colors(12))
+```
+
+### Boxplot
+
+```{r}
+boxplot(ginkgo$petiole_length, xlab = "Petiole Length", main = "Boxplot of Petiole Length", col = "aliceblue")
+```
+```{r}
+boxplot(ginkgo$seeds_present, ginkgo$max_depth, names = c("No Seeds", "Seed Present"), main = "Boxplot of Seed Presence 
+        by the Max Leaf Depth", col = topo.colors(2))
+```
+
+### Par() and Mrow of Histograms
+
+```{r}
+par(mfrow = c(2, 2))
+
+hist(ginkgo$max_width, main = "Histogram of Ginkgo Max Leaf Width", xlab = "Max Leaf Width", col = heat.colors(10))
+hist(penguins$bill_length_mm, main = "Histogram of Penguin Bill Lengths", xlab = "Bill lengths (mm)", col= terrain.colors(13))
+
+seat <- data.frame(Seatbelts)
+hist(seat$DriversKilled, main = "Histogram of Drivers Killed from 
+     Road Casualties in Great Britain
+              1969-84", xlab = "Monthly number of Drivers Killed", 
+    col =hsv(0.5, seq(0,.50,length.out = 7), .85) )
+hist(iris$Petal.Length, main = "Histogram of Iris Petal Length", xlab = "Petal Length", col=c(2,4,6,8))
+```
+
+
+## Distribution Functions
+
+### dnorm()
+
+dnorm() calculates the probability density of normal distribution.
+
+```{r}
+dnorm(x = -8:8, mean = 1, sd = 3) 
+```
+
+### pnorm()
+
+pnorm outputs the cumulative distribution of the normal distribution. 
+
+```{r}
+pnorm(0, mean = 0, sd = 1)
+```
+
+### qnorm()
+
+qnorm outputs the quantile Q for any probability. 
+
+```{r}
+qnorm(0.17, mean = 0, sd = 1)
+```
+
+### dbinom()
+
+dbinom() calculates the probability density of binomial distribution
+
+```{r}
+dbinom(x = 1:10, size = 10, prob = 0.4)
+```
+
+### pbinom()
+
+pbinom  will give you the binomial distribution of an event.
+
+```{r}
+pbinom(69, size = 10, prob = 0.3)
+```
+
+### qbinom()
+
+qbinom will output the binomial quantile function. 
+
+```{r}
+qbinom(p = 0.67, size = 5, prob = 0.47)
+```
+
+

@@ -13,3 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 This is where I study... It didn't work at first but hopefully it works now. 
+
+[Final Project: R Reference Guide](final_R_reference.html)
+
+```{r}
+[Final Project: R Reference Guide] (final_R_reference.html)
+
+```
+

@@ -1,12 +1,131 @@
 ---
-title: "Lab 10: ANOVA by Hand "
+title: "ANOVA By Hand"
 author: "Jahiya Clark"
-date: "11/17/2021"
-output: 
-  html_document:
-    toc: yes
-    toc_float: yes
-  pdf_document:
-    toc: yes
-  code_folding: show
+date: "11/28/2021"
+output: html_document
 ---
+
+# Question 1 (anova by hand)
+```{r}
+
+require(here)
+rope <- read.csv(here("data", "rope.csv"))
+
+rope$rope.type = factor(rope$rope.type)
+levels(rope$rope.type)
+                        
+n_obs = nrow(rope)
+n_groups = length(levels(rope$rope.type))             
+
+ss_tot = sum((rope$p.cut - (mean(rope$p.cut)))^2)
+df_tot = n_obs - 1
+
+aggregate(
+  x = rope$p.cut,
+  by = list(rope$rope.type), 
+  FUN = mean)
+
+aggregate(
+  x = rope$p.cut,
+  by = list(rope$rope.type),
+  FUN = function(x) mean(x))
+
+agg_resids = 
+  aggregate(
+  x = rope$p.cut,
+  by = list(rope$rope.type),
+  FUN = function(x) mean(x))
+
+str(agg_resids)
+
+agg_sq_resids = 
+  aggregate(
+    x = rope$p.cut,
+    by = list(rope$rope.type),
+    FUN = function(x) sum((x - mean(x))^2) )
+
+str(agg_sq_resids)
+
+ss_within = sum(agg_sq_resids$x)
+df_within <- n_obs - n_groups
+
+ss_among = ss_tot - ss_within
+df_among <- n_groups -1
+
+ms_among  =  ss_among / (n_groups - 1)
+ms_within = ss_within / (n_obs - n_groups)
+                  
+f_ratio = ms_among / ms_within
+f_ratio
+f_pval = 1 - pf(f_ratio, df_among, df_within)
+f_pval
+
+```
+
+# Question 1 (self-check)
+
+```{r}
+
+digits_check = 5
+
+fit_1 = lm(p.cut ~ rope.type, data=rope)
+anova(fit_1)
+anova_fit_1 = anova(fit_1)
+
+anova_fit_1$Df == c(df_among, df_within)
+
+round(anova_fit_1$`Sum Sq`, digits = digits_check) == round(c(ss_among, ss_within), digits = digits_check)
+
+round(anova_fit_1$`Mean Sq`, digits = digits_check) == round(c(ms_among, ms_within), digits = digits_check)
+
+round(anova_fit_1$`F value`[1], digits = digits_check) == round(f_ratio, digits = digits_check)
+
+round(anova_fit_1$`Pr(>F)`[1], digits = digits_check) == round(f_pval, digits = digits_check)
+
+```
+
+
+# Question 2
+
+Yes, I beleive the variances from the partioning variance: within-group are about equal, the values seem to be around 0.2, just looking like at it. 
+
+# Question 3
+
+The p-value of the Bartlett test is 0.00143, meaning we can reject the null hypothesis that variances are the same. 
+
+```{r}
+bartlett.test(p.cut ~ rope.type, data = rope)
+```
+
+# Question 4
+
+Yes, I would say an ANOVA analysis is needed because just based on the graphical depiction of the raw data the variances seem equal but the Bartlett test had such a small p-value that we can argue the variances are quite different. There might be more difference that a statistical analysis can give us more information.
+
+# Question 5
+
+Blaze rope type is the base case. 
+
+# Question 6
+
+The mean percent cut of the base case rope is 0.36714
+
+```{r}
+fit_rope_1 = lm(p.cut ~ rope.type, data = rope)
+summary(fit_rope_1)
+
+fit_rope_1$coefficient[[1]]
+
+
+```
+
+# Question 7
+
+The mean percent cut of the XTC rope type is 0.2655. 
+
+```{r}
+
+fit_rope_1$coefficient[[1]] + fit_rope_1$coefficient[[6]]
+```
+
+
+
